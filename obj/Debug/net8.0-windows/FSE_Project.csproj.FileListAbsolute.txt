@@ -15,3 +15,4 @@ C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\FSE_Proje
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\FSE_Project\obj\Debug\net8.0-windows\FSE_Project.genruntimeconfig.cache
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\FSE_Project\obj\Debug\net8.0-windows\ref\FSE_Project.dll
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\FSE_Project\obj\Debug\net8.0-windows\FSE_Project.Properties.Resources.resources
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\FSE_Project\obj\Debug\net8.0-windows\FSE_Project.sourcelink.json
