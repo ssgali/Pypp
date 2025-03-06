@@ -39,9 +39,9 @@
             newToolStripButton = new ToolStripButton();
             openToolStripButton = new ToolStripButton();
             saveToolStripButton = new ToolStripButton();
+            toolStripButton2 = new ToolStripButton();
             toolStripSeparator = new ToolStripSeparator();
             toolStripButton1 = new ToolStripButton();
-            toolStripButton2 = new ToolStripButton();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -135,6 +135,16 @@
             saveToolStripButton.Text = "&Save";
             saveToolStripButton.Click += saveToolStripButton_Click;
             // 
+            // toolStripButton2
+            // 
+            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
+            toolStripButton2.ImageTransparentColor = Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(23, 22);
+            toolStripButton2.Text = "Close";
+            toolStripButton2.Click += toolStripButton2_Click;
+            // 
             // toolStripSeparator
             // 
             toolStripSeparator.Name = "toolStripSeparator";
@@ -148,16 +158,6 @@
             toolStripButton1.Name = "toolStripButton1";
             toolStripButton1.Size = new Size(23, 22);
             toolStripButton1.Text = "toolStripButton1";
-            // 
-            // toolStripButton2
-            // 
-            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
-            toolStripButton2.ImageTransparentColor = Color.Magenta;
-            toolStripButton2.Name = "toolStripButton2";
-            toolStripButton2.Size = new Size(23, 22);
-            toolStripButton2.Text = "toolStripButton2";
-            toolStripButton2.Click += toolStripButton2_Click;
             // 
             // Form1
             // 

@@ -13,6 +13,7 @@ namespace FSE_Project
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.KeyPreview = true;
             AddNewTab();
         }
 
@@ -38,7 +39,36 @@ namespace FSE_Project
                 DecreaseFontSize();
                 e.SuppressKeyPress = true;
             }
+            else if (e.Control && e.KeyCode == Keys.N)
+            {
+                AddNewTab();
+                e.SuppressKeyPress = true;  // Prevents unwanted character input
+            }
+            else if (e.Control && e.KeyCode == Keys.S)
+            {
+                SaveCurrentFile();
+                e.SuppressKeyPress = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.Tab)
+            {
+                SwitchToNextTab();
+                e.SuppressKeyPress = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.W)
+            {
+                CloseCurrentTab();
+                e.SuppressKeyPress = true;
+            }
         }
+        private void SwitchToNextTab()
+        {
+            if (tabControl1.TabCount > 1)
+            {
+                int nextIndex = (tabControl1.SelectedIndex + 1) % tabControl1.TabCount;
+                tabControl1.SelectedIndex = nextIndex;
+            }
+        }
+
         private void IncreaseFontSize()
         {
             var rtb = GetCurrentRichTextBox();
@@ -183,9 +213,26 @@ namespace FSE_Project
 
         private void CloseCurrentTab()
         {
-            if (tabControl1.TabPages.Count > 0) // Ensure there's at least one tab
+            if (tabControl1.SelectedTab != null)
             {
-                tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                TabPage currentTab = tabControl1.SelectedTab;
+
+                if (currentTab.Text.EndsWith("*"))
+                {
+                    DialogResult result = MessageBox.Show(
+                        "Do you want to save changes to " + currentTab.Text.TrimEnd('*') + "?",
+                        "Unsaved Changes",
+                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Cancel)
+                        return;
+
+                    if (result == DialogResult.Yes)
+                        SaveCurrentFile();
+                }
+
+                tabControl1.TabPages.Remove(currentTab);
             }
         }
 
@@ -193,5 +240,6 @@ namespace FSE_Project
         {
             CloseCurrentTab();
         }
+
     }
 }
