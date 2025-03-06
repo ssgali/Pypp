@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows.Forms;
 
 namespace FSE_Project
 {
@@ -10,97 +11,187 @@ namespace FSE_Project
             this.Text = "Py++";
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog open = new OpenFileDialog();
-
-            open.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            open.Title = "Open File";
-            open.FileName = "";
-
-            if (open.ShowDialog() == DialogResult.OK)
-            {
-                // save the opened FileName in our variable
-                this.FileName = open.FileName;
-                this.Text = string.Format("{0}", Path.GetFileNameWithoutExtension(open.FileName));
-                StreamReader reader = new StreamReader(open.FileName);
-                richTextBox1.Text = reader.ReadToEnd();
-                reader.Close();
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saving = new SaveFileDialog();
-
-            saving.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            saving.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            saving.Title = "Save As";
-            saving.FileName = "Untitled";
-
-            if (saving.ShowDialog() == DialogResult.OK)
-            {
-                // save the new FileName in our variable
-                this.FileName = saving.FileName;
-                StreamWriter writing = new StreamWriter(saving.FileName);
-                writing.Write(richTextBox1.Text);
-                writing.Close();
-            }
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBox1.Text = "Current Directory:   " + Environment.CurrentDirectory;
-            textBox1.ReadOnly = true;
-            textBox1.TabStop = false;
-            ActiveControl = null;
+            AddNewTab();
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+
+        private RichTextBox GetCurrentRichTextBox()
         {
-
+            if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Controls.Count > 0)
+            {
+                return tabControl1.SelectedTab.Controls[0] as RichTextBox;
+            }
+            return null;
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private string FileName = string.Empty;
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.FileName = string.Empty;
-            richTextBox1.Clear();
-        }
         private void richTextBox1_KeyDown_1(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.Oemplus)  // Ctrl +
             {
                 IncreaseFontSize();
-                e.SuppressKeyPress = true; // Prevents the default behavior
+                e.SuppressKeyPress = true;
             }
-            else if (e.Control && e.KeyCode == Keys.OemMinus) // Ctrl -
+            else if (e.Control && e.KeyCode == Keys.OemMinus)  // Ctrl -
             {
                 DecreaseFontSize();
-                e.SuppressKeyPress = true; // Prevents the default behavior
+                e.SuppressKeyPress = true;
             }
         }
         private void IncreaseFontSize()
         {
-            float newSize = richTextBox1.Font.Size + 1;
-            richTextBox1.Font = new Font(richTextBox1.Font.FontFamily, newSize);
+            var rtb = GetCurrentRichTextBox();
+            if (rtb != null)
+            {
+                rtb.Font = new Font(rtb.Font.FontFamily, rtb.Font.Size + 1);
+            }
         }
 
         private void DecreaseFontSize()
         {
-            float newSize = richTextBox1.Font.Size - 1;
-            if (newSize >= 6)  // Minimum font size to avoid invisible text
+            var rtb = GetCurrentRichTextBox();
+            if (rtb != null && rtb.Font.Size > 6)
             {
-                richTextBox1.Font = new Font(richTextBox1.Font.FontFamily, newSize);
+                rtb.Font = new Font(rtb.Font.FontFamily, rtb.Font.Size - 1);
             }
         }
 
-        
+        private string FileName = string.Empty;
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                SaveCurrentFile();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void newToolStripButton_Click_1(object sender, EventArgs e)
+        {
+            AddNewTab();
+        }
+
+        private void AddNewTab()
+        {
+            TabPage newTab = new TabPage("Untitled");
+            RichTextBox richTextBox = new RichTextBox
+            {
+                Dock = DockStyle.Fill,
+                AcceptsTab = true
+            };
+            richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
+            richTextBox.KeyDown += richTextBox1_KeyDown_1;  // Support font size shortcuts
+
+            newTab.Controls.Add(richTextBox);
+            tabControl1.TabPages.Add(newTab);
+            tabControl1.SelectedTab = newTab;
+            newTab.Tag = null;
+        }
+
+        private void MarkTabUnsaved(TabPage tab)
+        {
+            if (!tab.Text.EndsWith("*"))
+            {
+                tab.Text += "*";
+            }
+        }
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog
+            {
+                Filter = "All Files (*.*)|*.*",
+                Title = "Open File"
+            };
+
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                OpenFile(open.FileName);
+            }
+        }
+
+        private void OpenFile(string filePath)
+        {
+            string content = File.ReadAllText(filePath);
+
+            TabPage newTab = new TabPage(Path.GetFileName(filePath));
+            RichTextBox richTextBox = new RichTextBox
+            {
+                Dock = DockStyle.Fill,
+                Text = content
+            };
+
+            richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
+            richTextBox.KeyDown += richTextBox1_KeyDown_1;  // Add font size support
+
+            newTab.Controls.Add(richTextBox);
+            newTab.Tag = filePath;
+
+            tabControl1.TabPages.Add(newTab);
+            tabControl1.SelectedTab = newTab;
+        }
+
+        private void SaveCurrentFile()
+        {
+            if (tabControl1.SelectedTab == null) return;
+
+            TabPage currentTab = tabControl1.SelectedTab;
+            RichTextBox richTextBox = GetCurrentRichTextBox();
+            if (richTextBox == null) return;
+
+            string filePath = currentTab.Tag as string;
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                SaveCurrentFileAs();
+            }
+            else
+            {
+                File.WriteAllText(filePath, richTextBox.Text);
+                currentTab.Text = Path.GetFileName(filePath);  // Remove "*"
+            }
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            SaveCurrentFile();
+        }
+        private void SaveCurrentFileAs()
+        {
+            if (tabControl1.SelectedTab == null) return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "All Files|*.*"
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                TabPage currentTab = tabControl1.SelectedTab;
+                RichTextBox richTextBox = GetCurrentRichTextBox();
+
+                string filePath = saveFileDialog.FileName;
+                File.WriteAllText(filePath, richTextBox.Text);
+
+                currentTab.Tag = filePath;
+                currentTab.Text = Path.GetFileName(filePath);  // Remove "*"
+            }
+        }
+
+        private void CloseCurrentTab()
+        {
+            if (tabControl1.TabPages.Count > 0) // Ensure there's at least one tab
+            {
+                tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+            }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            CloseCurrentTab();
+        }
     }
 }
