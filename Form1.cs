@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FSE_Project
 {
@@ -9,6 +10,14 @@ namespace FSE_Project
         {
             InitializeComponent();
             this.Text = "Py++";
+            treeView1.Dock = DockStyle.Left;
+            treeView1.Width = 250;  // Adjust to your liking
+
+            // Add to the Form
+            this.Controls.Add(treeView1);
+
+            // Add event for double click to open files
+            treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -17,7 +26,51 @@ namespace FSE_Project
             AddNewTab();
         }
 
+        private void LoadFolderIntoTree(string folderPath)
+        {
+            treeView1.Nodes.Clear();
+            DirectoryInfo rootDir = new DirectoryInfo(folderPath);
 
+            TreeNode rootNode = new TreeNode(rootDir.Name)
+            {
+                Tag = rootDir.FullName
+            };
+
+            treeView1.Nodes.Add(rootNode);
+            LoadSubDirectories(rootNode, rootDir);
+            if (treeView1.Nodes.Count > 0)
+            {
+                treeView1.Nodes[0].Expand();  // Expand only the root folder
+            }
+        }
+        private void LoadSubDirectories(TreeNode parentNode, DirectoryInfo parentDir)
+        {
+            try
+            {
+                foreach (var dir in parentDir.GetDirectories())
+                {
+                    TreeNode dirNode = new TreeNode(dir.Name)
+                    {
+                        Tag = dir.FullName
+                    };
+                    parentNode.Nodes.Add(dirNode);
+                    LoadSubDirectories(dirNode, dir);
+                }
+
+                foreach (var file in parentDir.GetFiles())
+                {
+                    TreeNode fileNode = new TreeNode(file.Name)
+                    {
+                        Tag = file.FullName
+                    };
+                    parentNode.Nodes.Add(fileNode);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading folder: " + ex.Message);
+            }
+        }
         private RichTextBox GetCurrentRichTextBox()
         {
             if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Controls.Count > 0)
@@ -43,6 +96,11 @@ namespace FSE_Project
             {
                 AddNewTab();
                 e.SuppressKeyPress = true;  // Prevents unwanted character input
+            }
+            else if (e.Control && e.KeyCode == Keys.O)
+            {
+                OpenFolder();
+                e.SuppressKeyPress = true;
             }
             else if (e.Control && e.KeyCode == Keys.S)
             {
@@ -120,7 +178,16 @@ namespace FSE_Project
             tabControl1.SelectedTab = newTab;
             newTab.Tag = null;
         }
-
+        private void OpenFolder()
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    LoadFolderIntoTree(folderDialog.SelectedPath);
+                }
+            }
+        }
         private void MarkTabUnsaved(TabPage tab)
         {
             if (!tab.Text.EndsWith("*"))
@@ -241,5 +308,17 @@ namespace FSE_Project
             CloseCurrentTab();
         }
 
+        private void treeView1_NodeMouseDoubleClick_1(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node != null && e.Node.Tag != null && File.Exists(e.Node.Tag.ToString()))
+            {
+                OpenFile(e.Node.Tag.ToString());
+            }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            OpenFolder();
+        }
     }
 }
