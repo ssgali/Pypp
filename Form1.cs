@@ -10,12 +10,6 @@ namespace FSE_Project
         {
             InitializeComponent();
             this.Text = "Py++";
-            treeView1.Dock = DockStyle.Left;
-            treeView1.Width = 250;  // Adjust to your liking
-
-            // Add to the Form
-            this.Controls.Add(treeView1);
-
             // Add event for double click to open files
             treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
         }

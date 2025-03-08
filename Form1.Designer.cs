@@ -34,8 +34,9 @@ namespace FSE_Project
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             contextMenuStrip1 = new ContextMenuStrip(components);
             panel2 = new Panel();
-            treeView1 = new TreeView();
+            panel3 = new Panel();
             tabControl1 = new TabControl();
+            treeView1 = new TreeView();
             toolStrip1 = new ToolStrip();
             toolStripButton3 = new ToolStripButton();
             openToolStripButton = new ToolStripButton();
@@ -46,6 +47,7 @@ namespace FSE_Project
             toolStripButton1 = new ToolStripButton();
             panel1 = new Panel();
             panel2.SuspendLayout();
+            panel3.SuspendLayout();
             toolStrip1.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -57,21 +59,22 @@ namespace FSE_Project
             // 
             // panel2
             // 
+            panel2.Controls.Add(panel3);
             panel2.Controls.Add(treeView1);
-            panel2.Controls.Add(tabControl1);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 26);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1220, 612);
+            panel2.Size = new Size(1147, 548);
             panel2.TabIndex = 6;
             // 
-            // treeView1
+            // panel3
             // 
-            treeView1.Dock = DockStyle.Left;
-            treeView1.Location = new Point(0, 0);
-            treeView1.Name = "treeView1";
-            treeView1.Size = new Size(113, 612);
-            treeView1.TabIndex = 10;
+            panel3.Controls.Add(tabControl1);
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(142, 0);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1005, 548);
+            panel3.TabIndex = 10;
             // 
             // tabControl1
             // 
@@ -83,17 +86,27 @@ namespace FSE_Project
             tabControl1.Name = "tabControl1";
             tabControl1.Padding = new Point(10, 3);
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1220, 612);
+            tabControl1.Size = new Size(1005, 548);
             tabControl1.SizeMode = TabSizeMode.Fixed;
-            tabControl1.TabIndex = 9;
+            tabControl1.TabIndex = 10;
             tabControl1.TabStop = false;
+            // 
+            // treeView1
+            // 
+            treeView1.Dock = DockStyle.Left;
+            treeView1.Location = new Point(0, 0);
+            treeView1.Name = "treeView1";
+            treeView1.Size = new Size(142, 548);
+            treeView1.TabIndex = 0;
             // 
             // toolStrip1
             // 
+            toolStrip1.BackColor = Color.PaleTurquoise;
+            toolStrip1.Dock = DockStyle.Fill;
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton3, openToolStripButton, newToolStripButton, saveToolStripButton, toolStripButton2, toolStripSeparator, toolStripButton1 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(1220, 25);
+            toolStrip1.Size = new Size(1147, 26);
             toolStrip1.TabIndex = 6;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -103,7 +116,7 @@ namespace FSE_Project
             toolStripButton3.Image = (Image)resources.GetObject("toolStripButton3.Image");
             toolStripButton3.ImageTransparentColor = Color.Magenta;
             toolStripButton3.Name = "toolStripButton3";
-            toolStripButton3.Size = new Size(23, 22);
+            toolStripButton3.Size = new Size(23, 23);
             toolStripButton3.Text = "Open Folder";
             toolStripButton3.Click += toolStripButton3_Click;
             // 
@@ -113,7 +126,7 @@ namespace FSE_Project
             openToolStripButton.Image = (Image)resources.GetObject("openToolStripButton.Image");
             openToolStripButton.ImageTransparentColor = Color.Magenta;
             openToolStripButton.Name = "openToolStripButton";
-            openToolStripButton.Size = new Size(23, 22);
+            openToolStripButton.Size = new Size(23, 23);
             openToolStripButton.Text = "&Open";
             openToolStripButton.Click += openToolStripButton_Click;
             // 
@@ -123,7 +136,7 @@ namespace FSE_Project
             newToolStripButton.Image = (Image)resources.GetObject("newToolStripButton.Image");
             newToolStripButton.ImageTransparentColor = Color.Magenta;
             newToolStripButton.Name = "newToolStripButton";
-            newToolStripButton.Size = new Size(23, 22);
+            newToolStripButton.Size = new Size(23, 23);
             newToolStripButton.Text = "&New";
             newToolStripButton.Click += newToolStripButton_Click_1;
             // 
@@ -133,7 +146,7 @@ namespace FSE_Project
             saveToolStripButton.Image = (Image)resources.GetObject("saveToolStripButton.Image");
             saveToolStripButton.ImageTransparentColor = Color.Magenta;
             saveToolStripButton.Name = "saveToolStripButton";
-            saveToolStripButton.Size = new Size(23, 22);
+            saveToolStripButton.Size = new Size(23, 23);
             saveToolStripButton.Text = "&Save";
             saveToolStripButton.Click += saveToolStripButton_Click;
             // 
@@ -143,14 +156,14 @@ namespace FSE_Project
             toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
             toolStripButton2.ImageTransparentColor = Color.Magenta;
             toolStripButton2.Name = "toolStripButton2";
-            toolStripButton2.Size = new Size(23, 22);
+            toolStripButton2.Size = new Size(23, 23);
             toolStripButton2.Text = "Close";
             toolStripButton2.Click += toolStripButton2_Click;
             // 
             // toolStripSeparator
             // 
             toolStripSeparator.Name = "toolStripSeparator";
-            toolStripSeparator.Size = new Size(6, 25);
+            toolStripSeparator.Size = new Size(6, 26);
             // 
             // toolStripButton1
             // 
@@ -158,7 +171,7 @@ namespace FSE_Project
             toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
             toolStripButton1.ImageTransparentColor = Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(23, 22);
+            toolStripButton1.Size = new Size(23, 23);
             toolStripButton1.Text = "toolStripButton1";
             // 
             // panel1
@@ -168,7 +181,7 @@ namespace FSE_Project
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1220, 26);
+            panel1.Size = new Size(1147, 26);
             panel1.TabIndex = 1;
             // 
             // Form1
@@ -176,7 +189,7 @@ namespace FSE_Project
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
-            ClientSize = new Size(1220, 638);
+            ClientSize = new Size(1147, 574);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
@@ -186,6 +199,7 @@ namespace FSE_Project
             Text = "Py++";
             Load += Form1_Load;
             panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             panel1.ResumeLayout(false);
@@ -204,8 +218,9 @@ namespace FSE_Project
         private ToolStripSeparator toolStripSeparator;
         private ToolStripButton toolStripButton1;
         private ToolStripButton toolStripButton2;
-        private TabControl tabControl1;
         private ToolStripButton toolStripButton3;
         private TreeView treeView1;
+        private Panel panel3;
+        private TabControl tabControl1;
     }
 }
