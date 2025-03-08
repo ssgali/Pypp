@@ -64,7 +64,7 @@ namespace FSE_Project
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 26);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1147, 548);
+            panel2.Size = new Size(1839, 852);
             panel2.TabIndex = 6;
             // 
             // panel3
@@ -73,7 +73,7 @@ namespace FSE_Project
             panel3.Dock = DockStyle.Fill;
             panel3.Location = new Point(142, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1005, 548);
+            panel3.Size = new Size(1697, 852);
             panel3.TabIndex = 10;
             // 
             // tabControl1
@@ -86,7 +86,7 @@ namespace FSE_Project
             tabControl1.Name = "tabControl1";
             tabControl1.Padding = new Point(10, 3);
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1005, 548);
+            tabControl1.Size = new Size(1697, 852);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 10;
             tabControl1.TabStop = false;
@@ -96,7 +96,7 @@ namespace FSE_Project
             treeView1.Dock = DockStyle.Left;
             treeView1.Location = new Point(0, 0);
             treeView1.Name = "treeView1";
-            treeView1.Size = new Size(142, 548);
+            treeView1.Size = new Size(142, 852);
             treeView1.TabIndex = 0;
             // 
             // toolStrip1
@@ -106,7 +106,7 @@ namespace FSE_Project
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton3, openToolStripButton, newToolStripButton, saveToolStripButton, toolStripButton2, toolStripSeparator, toolStripButton1 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(1147, 26);
+            toolStrip1.Size = new Size(1839, 26);
             toolStrip1.TabIndex = 6;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -181,7 +181,7 @@ namespace FSE_Project
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1147, 26);
+            panel1.Size = new Size(1839, 26);
             panel1.TabIndex = 1;
             // 
             // Form1
@@ -189,7 +189,7 @@ namespace FSE_Project
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
-            ClientSize = new Size(1147, 574);
+            ClientSize = new Size(1839, 878);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);

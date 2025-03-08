@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
-namespace FSE_Project
+﻿namespace FSE_Project
 {
     public partial class Form1 : Form
     {
