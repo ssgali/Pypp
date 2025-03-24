@@ -34,3 +34,21 @@ C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\net8.0-windows\FSE_Project.pdb
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\net8.0-windows\FSE_Project.genruntimeconfig.cache
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\net8.0-windows\ref\FSE_Project.dll
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\bin\Debug\net8.0-windows\FSE_Project.exe
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\bin\Debug\net8.0-windows\FSE_Project.deps.json
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\bin\Debug\net8.0-windows\FSE_Project.runtimeconfig.json
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\bin\Debug\net8.0-windows\FSE_Project.dll
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\bin\Debug\net8.0-windows\FSE_Project.pdb
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.Form1.resources
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.Properties.Resources.resources
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.csproj.GenerateResource.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.AssemblyInfoInputs.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.AssemblyInfo.cs
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.csproj.CoreCompileInputs.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.sourcelink.json
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.dll
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\refint\FSE_Project.dll
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.pdb
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\FSE_Project.genruntimeconfig.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Project\Pypp\obj\Debug\net8.0-windows\ref\FSE_Project.dll

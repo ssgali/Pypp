@@ -1,4 +1,6 @@
-﻿namespace FSE_Project
+﻿using System.Diagnostics;
+
+namespace FSE_Project
 {
     public partial class Form1 : Form
     {
@@ -310,5 +312,66 @@
         {
             OpenFolder();
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            string filePath = tabControl1.SelectedTab.Tag as string;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("Save the file first");
+                return;
+            }
+
+            string extension = Path.GetExtension(filePath);
+            string directory = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(filePath);
+            string exePath = Path.Combine(directory, Path.GetFileNameWithoutExtension(filePath) + ".exe");
+
+            // Create a batch script to handle execution and pause
+            string batchScript = Path.Combine(directory, "run_temp.bat");
+
+            using (StreamWriter writer = new StreamWriter(batchScript))
+            {
+                writer.WriteLine("@echo off");
+                writer.WriteLine("cd /d \"" + directory + "\"");
+                writer.WriteLine("cls");
+
+                if (extension == ".cpp" || extension == ".c")
+                {
+                    writer.WriteLine($"g++ \"{fileName}\" -o \"{exePath}\"");
+                    writer.WriteLine($"if %errorlevel% == 0 ( \"{exePath}\" )");
+                }
+                else if (extension == ".py")
+                {
+                    writer.WriteLine($"python \"{filePath}\"");
+                }
+                else { 
+                    writer.WriteLine("echo Please run a valid filetype");
+                    writer.WriteLine("echo Supported filetypes are: ");
+                    writer.WriteLine("echo 1. Python");
+                    writer.WriteLine("echo 2. CPP");
+                    writer.WriteLine("echo 3. C");
+                }
+
+                writer.WriteLine("echo.");
+                writer.WriteLine("echo Press any key to exit...");
+                writer.WriteLine("pause >nul");
+                writer.WriteLine("del \"%~f0\""); // Deletes itself after execution
+            }
+
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c \"{batchScript}\"",
+                UseShellExecute = true, // Required to open CMD in a new window
+                CreateNoWindow = false  // Ensures CMD is visible
+            };
+
+            Process process = new Process { StartInfo = startInfo };
+            process.Start();
+        }
+
+
+
     }
 }
