@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
 
 namespace FSE_Project
 {
@@ -72,44 +74,6 @@ namespace FSE_Project
             return null;
         }
 
-        private void richTextBox1_KeyDown_1(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.Oemplus)  // Ctrl +
-            {
-                IncreaseFontSize();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.OemMinus)  // Ctrl -
-            {
-                DecreaseFontSize();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.N)
-            {
-                AddNewTab();
-                e.SuppressKeyPress = true;  // Prevents unwanted character input
-            }
-            else if (e.Control && e.KeyCode == Keys.O)
-            {
-                OpenFolder();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.S)
-            {
-                SaveCurrentFile();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.Tab)
-            {
-                SwitchToNextTab();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.W)
-            {
-                CloseCurrentTab();
-                e.SuppressKeyPress = true;
-            }
-        }
         private void SwitchToNextTab()
         {
             if (tabControl1.TabCount > 1)
@@ -137,16 +101,57 @@ namespace FSE_Project
             }
         }
 
-        private string FileName = string.Empty;
+        //private string FileName = string.Empty;
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) // for Global key bindings
         {
-            if (keyData == (Keys.Control | Keys.S))
+            if (keyData == (Keys.Control | Keys.Oemplus))  // Ctrl +
+            {
+                IncreaseFontSize();
+                return true; // Prevents further processing
+            }
+            else if (keyData == (Keys.Control | Keys.OemMinus))  // Ctrl -
+            {
+                DecreaseFontSize();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.N))
+            {
+                AddNewTab();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.O))
+            {
+                OpenFolder();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.K))
+            {
+                OpenFile();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.S))
             {
                 SaveCurrentFile();
                 return true;
             }
-            return base.ProcessCmdKey(ref msg, keyData);
+            else if (keyData == (Keys.Control | Keys.Tab))
+            {
+                SwitchToNextTab();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.W))
+            {
+                CloseCurrentTab();
+                return true;
+            }
+            else if (keyData == (Keys.F5))
+            {
+                RunFile();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData); // Pass other keys to default handler
         }
 
         private void newToolStripButton_Click_1(object sender, EventArgs e)
@@ -163,13 +168,13 @@ namespace FSE_Project
                 AcceptsTab = true
             };
             richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-            richTextBox.KeyDown += richTextBox1_KeyDown_1;  // Support font size shortcuts
 
             newTab.Controls.Add(richTextBox);
             tabControl1.TabPages.Add(newTab);
             tabControl1.SelectedTab = newTab;
             newTab.Tag = null;
         }
+        
         private void OpenFolder()
         {
             using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
@@ -180,15 +185,8 @@ namespace FSE_Project
                 }
             }
         }
-        private void MarkTabUnsaved(TabPage tab)
-        {
-            if (!tab.Text.EndsWith("*"))
-            {
-                tab.Text += "*";
-            }
-        }
 
-        private void openToolStripButton_Click(object sender, EventArgs e)
+        private void OpenFile()
         {
             OpenFileDialog open = new OpenFileDialog
             {
@@ -198,11 +196,27 @@ namespace FSE_Project
 
             if (open.ShowDialog() == DialogResult.OK)
             {
-                OpenFile(open.FileName);
+                string filePath = open.FileName;
+                string content = File.ReadAllText(filePath);
+
+                TabPage newTab = new TabPage(Path.GetFileName(filePath));
+                RichTextBox richTextBox = new RichTextBox
+                {
+                    Dock = DockStyle.Fill,
+                    Text = content
+                };
+
+                richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
+
+                newTab.Controls.Add(richTextBox);
+                newTab.Tag = filePath;
+
+                tabControl1.TabPages.Add(newTab);
+                tabControl1.SelectedTab = newTab;
             }
         }
 
-        private void OpenFile(string filePath)
+        private void OpenFileFromTree(string filePath)
         {
             string content = File.ReadAllText(filePath);
 
@@ -214,13 +228,77 @@ namespace FSE_Project
             };
 
             richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-            richTextBox.KeyDown += richTextBox1_KeyDown_1;  // Add font size support
 
             newTab.Controls.Add(richTextBox);
             newTab.Tag = filePath;
 
             tabControl1.TabPages.Add(newTab);
             tabControl1.SelectedTab = newTab;
+        }
+
+        private void RunFile() {
+            string filePath = tabControl1.SelectedTab.Tag as string;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("Save the file first");
+                return;
+            }
+
+            string extension = Path.GetExtension(filePath);
+            string directory = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(filePath);
+            string exePath = Path.Combine(directory, Path.GetFileNameWithoutExtension(filePath) + ".exe");
+
+            // Create a batch script to handle execution and pause
+            string batchScript = Path.Combine(directory, "run_temp.bat");
+
+            using (StreamWriter writer = new StreamWriter(batchScript))
+            {
+                writer.WriteLine("@echo off");
+                writer.WriteLine("cd /d \"" + directory + "\"");
+                writer.WriteLine("cls");
+
+                if (extension == ".cpp" || extension == ".c")
+                {
+                    writer.WriteLine($"g++ \"{fileName}\" -o \"{exePath}\"");
+                    writer.WriteLine($"if %errorlevel% == 0 ( \"{exePath}\" )");
+                }
+                else if (extension == ".py")
+                {
+                    writer.WriteLine($"python \"{filePath}\"");
+                }
+                else
+                {
+                    writer.WriteLine("echo Please run a valid filetype");
+                    writer.WriteLine("echo Supported filetypes are: ");
+                    writer.WriteLine("echo 1. Python");
+                    writer.WriteLine("echo 2. CPP");
+                    writer.WriteLine("echo 3. C");
+                }
+
+                writer.WriteLine("echo.");
+                writer.WriteLine("echo Press any key to exit...");
+                writer.WriteLine("pause >nul");
+                writer.WriteLine("del \"%~f0\""); // Deletes itself after execution
+            }
+
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c \"{batchScript}\"",
+                UseShellExecute = true, // Required to open CMD in a new window
+                CreateNoWindow = false  // Ensures CMD is visible
+            };
+
+            Process process = new Process { StartInfo = startInfo };
+            process.Start();
+        }
+        private void MarkTabUnsaved(TabPage tab)
+        {
+            if (!tab.Text.EndsWith("*"))
+            {
+                tab.Text += "*";
+            }
         }
 
         private void SaveCurrentFile()
@@ -267,6 +345,7 @@ namespace FSE_Project
 
                 currentTab.Tag = filePath;
                 currentTab.Text = Path.GetFileName(filePath);  // Remove "*"
+                LoadFolderIntoTree(Path.GetDirectoryName(filePath)); // to reload the file tree with the new file
             }
         }
 
@@ -295,6 +374,11 @@ namespace FSE_Project
             }
         }
 
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+        }
+
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             CloseCurrentTab();
@@ -304,7 +388,7 @@ namespace FSE_Project
         {
             if (e.Node != null && e.Node.Tag != null && File.Exists(e.Node.Tag.ToString()))
             {
-                OpenFile(e.Node.Tag.ToString());
+                OpenFileFromTree(e.Node.Tag.ToString());
             }
         }
 
@@ -315,63 +399,7 @@ namespace FSE_Project
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            string filePath = tabControl1.SelectedTab.Tag as string;
-            if (string.IsNullOrEmpty(filePath))
-            {
-                MessageBox.Show("Save the file first");
-                return;
-            }
-
-            string extension = Path.GetExtension(filePath);
-            string directory = Path.GetDirectoryName(filePath);
-            string fileName = Path.GetFileName(filePath);
-            string exePath = Path.Combine(directory, Path.GetFileNameWithoutExtension(filePath) + ".exe");
-
-            // Create a batch script to handle execution and pause
-            string batchScript = Path.Combine(directory, "run_temp.bat");
-
-            using (StreamWriter writer = new StreamWriter(batchScript))
-            {
-                writer.WriteLine("@echo off");
-                writer.WriteLine("cd /d \"" + directory + "\"");
-                writer.WriteLine("cls");
-
-                if (extension == ".cpp" || extension == ".c")
-                {
-                    writer.WriteLine($"g++ \"{fileName}\" -o \"{exePath}\"");
-                    writer.WriteLine($"if %errorlevel% == 0 ( \"{exePath}\" )");
-                }
-                else if (extension == ".py")
-                {
-                    writer.WriteLine($"python \"{filePath}\"");
-                }
-                else { 
-                    writer.WriteLine("echo Please run a valid filetype");
-                    writer.WriteLine("echo Supported filetypes are: ");
-                    writer.WriteLine("echo 1. Python");
-                    writer.WriteLine("echo 2. CPP");
-                    writer.WriteLine("echo 3. C");
-                }
-
-                writer.WriteLine("echo.");
-                writer.WriteLine("echo Press any key to exit...");
-                writer.WriteLine("pause >nul");
-                writer.WriteLine("del \"%~f0\""); // Deletes itself after execution
-            }
-
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/c \"{batchScript}\"",
-                UseShellExecute = true, // Required to open CMD in a new window
-                CreateNoWindow = false  // Ensures CMD is visible
-            };
-
-            Process process = new Process { StartInfo = startInfo };
-            process.Start();
+            RunFile();
         }
-
-
-
     }
 }
