@@ -12,12 +12,21 @@ namespace FSE_Project
             this.Text = "Py++";
             // Add event for double click to open files
             treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
+
         }
 
+        private ToolTip tabToolTip = new ToolTip();
+        private bool isMouseMoveAttached = false; // Flag to track event subscription
         private void Form1_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
-            AddNewTab();
+            tabControl1.ShowToolTips = true; // Enable tooltips for TabControl
+            if (!isMouseMoveAttached)
+            {
+                tabControl1.MouseMove += TabControl1_MouseMove;
+                isMouseMoveAttached = true;
+            }
+            //AddNewTab();
         }
 
         private void LoadFolderIntoTree(string folderPath)
@@ -37,6 +46,7 @@ namespace FSE_Project
                 treeView1.Nodes[0].Expand();  // Expand only the root folder
             }
         }
+
         private void LoadSubDirectories(TreeNode parentNode, DirectoryInfo parentDir)
         {
             try
@@ -65,6 +75,7 @@ namespace FSE_Project
                 MessageBox.Show("Error loading folder: " + ex.Message);
             }
         }
+
         private RichTextBox GetCurrentRichTextBox()
         {
             if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Controls.Count > 0)
@@ -100,8 +111,6 @@ namespace FSE_Project
                 rtb.Font = new Font(rtb.Font.FontFamily, rtb.Font.Size - 1);
             }
         }
-
-        //private string FileName = string.Empty;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) // for Global key bindings
         {
@@ -174,7 +183,7 @@ namespace FSE_Project
             tabControl1.SelectedTab = newTab;
             newTab.Tag = null;
         }
-        
+
         private void OpenFolder()
         {
             using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
@@ -185,6 +194,66 @@ namespace FSE_Project
                 }
             }
         }
+
+        private void OpenFileFromPath(string filePath)
+        {
+            foreach (TabPage tab in tabControl1.TabPages)
+            {
+                if (tab.Tag is string existingPath && existingPath == filePath)
+                {
+                    tabControl1.SelectedTab = tab;  // Switch to the already opened tab
+                    return;
+                }
+            }
+
+            string content = File.ReadAllText(filePath);
+
+            TabPage newTab = new TabPage(Path.GetFileName(filePath))
+            {
+                ToolTipText = filePath  // Show full path on hover
+            };
+            RichTextBox richTextBox = new RichTextBox
+            {
+                Dock = DockStyle.Fill,
+                Text = content,
+                AcceptsTab = true
+            };
+
+            richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
+
+            // Adding to list of opened tabs
+            newTab.Controls.Add(richTextBox);
+            newTab.Tag = filePath;
+
+            tabControl1.TabPages.Add(newTab);
+            tabControl1.SelectedTab = newTab;
+        }
+
+        private void TabControl1_MouseMove(object sender, MouseEventArgs e)
+        {
+
+            for (int i = 0; i < tabControl1.TabPages.Count; i++)
+            {
+                Rectangle tabRect = tabControl1.GetTabRect(i);
+
+                if (tabRect.Contains(e.Location))
+                {
+                    // If a file path isn't set, fall back to using the tab's text ("Untitled" or file name)
+                    string tooltipText = tabControl1.TabPages[i].Tag as string;
+                    Debug.WriteLine("Running for " + (i) + " " + tooltipText);
+
+                    //AddNewTab();
+                    //tooltipText = tabControl1.TabPages[i].Text;
+                    Debug.WriteLine(tooltipText);
+
+
+                    tabToolTip.SetToolTip(tabControl1, tooltipText);
+                    return;
+                }
+            }
+            tabToolTip.SetToolTip(tabControl1, "");
+        }
+
 
         private void OpenFile()
         {
@@ -197,46 +266,17 @@ namespace FSE_Project
             if (open.ShowDialog() == DialogResult.OK)
             {
                 string filePath = open.FileName;
-                string content = File.ReadAllText(filePath);
-
-                TabPage newTab = new TabPage(Path.GetFileName(filePath));
-                RichTextBox richTextBox = new RichTextBox
-                {
-                    Dock = DockStyle.Fill,
-                    Text = content
-                };
-
-                richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-
-                newTab.Controls.Add(richTextBox);
-                newTab.Tag = filePath;
-
-                tabControl1.TabPages.Add(newTab);
-                tabControl1.SelectedTab = newTab;
+                OpenFileFromPath(filePath);
+            }
+            if (!isMouseMoveAttached)
+            {
+                tabControl1.MouseMove += TabControl1_MouseMove;
+                isMouseMoveAttached = true; // Mark as attached
             }
         }
 
-        private void OpenFileFromTree(string filePath)
+        private void RunFile()
         {
-            string content = File.ReadAllText(filePath);
-
-            TabPage newTab = new TabPage(Path.GetFileName(filePath));
-            RichTextBox richTextBox = new RichTextBox
-            {
-                Dock = DockStyle.Fill,
-                Text = content
-            };
-
-            richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-
-            newTab.Controls.Add(richTextBox);
-            newTab.Tag = filePath;
-
-            tabControl1.TabPages.Add(newTab);
-            tabControl1.SelectedTab = newTab;
-        }
-
-        private void RunFile() {
             string filePath = tabControl1.SelectedTab.Tag as string;
             if (string.IsNullOrEmpty(filePath))
             {
@@ -326,6 +366,7 @@ namespace FSE_Project
         {
             SaveCurrentFile();
         }
+        
         private void SaveCurrentFileAs()
         {
             if (tabControl1.SelectedTab == null) return;
@@ -388,7 +429,7 @@ namespace FSE_Project
         {
             if (e.Node != null && e.Node.Tag != null && File.Exists(e.Node.Tag.ToString()))
             {
-                OpenFileFromTree(e.Node.Tag.ToString());
+                OpenFileFromPath(e.Node.Tag.ToString());
             }
         }
 
@@ -401,5 +442,6 @@ namespace FSE_Project
         {
             RunFile();
         }
+
     }
 }

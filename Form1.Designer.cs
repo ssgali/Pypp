@@ -79,7 +79,7 @@ namespace FSE_Project
             // 
             tabControl1.Cursor = Cursors.Hand;
             tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Font = new Font("Cascadia Code", 13F);
+            tabControl1.Font = new Font("Cascadia Code", 11.75F);
             tabControl1.HotTrack = true;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
@@ -88,7 +88,6 @@ namespace FSE_Project
             tabControl1.Size = new Size(1228, 723);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 10;
-            tabControl1.TabStop = false;
             // 
             // treeView1
             // 
