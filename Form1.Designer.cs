@@ -170,7 +170,7 @@ namespace FSE_Project
             toolStripButton1.ImageTransparentColor = Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
             toolStripButton1.Size = new Size(23, 23);
-            toolStripButton1.Text = "toolStripButton1";
+            toolStripButton1.Text = "Run Code";
             toolStripButton1.Click += toolStripButton1_Click;
             // 
             // panel1
