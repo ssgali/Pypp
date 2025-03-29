@@ -16,17 +16,11 @@ namespace FSE_Project
         }
 
         private ToolTip tabToolTip = new ToolTip();
-        private bool isMouseMoveAttached = false; // Flag to track event subscription
         private void Form1_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
             tabControl1.ShowToolTips = true; // Enable tooltips for TabControl
-            if (!isMouseMoveAttached)
-            {
-                tabControl1.MouseMove += TabControl1_MouseMove;
-                isMouseMoveAttached = true;
-            }
-            //AddNewTab();
+            tabControl1.MouseMove += TabControl1_MouseMove;
         }
 
         private void LoadFolderIntoTree(string folderPath)
@@ -210,8 +204,10 @@ namespace FSE_Project
 
             TabPage newTab = new TabPage(Path.GetFileName(filePath))
             {
-                ToolTipText = filePath  // Show full path on hover
+                ToolTipText = filePath,  // Set the ToolTipText property to the file path
+                Tag = filePath  // Set the Tag property to the file path
             };
+
             RichTextBox richTextBox = new RichTextBox
             {
                 Dock = DockStyle.Fill,
@@ -223,7 +219,6 @@ namespace FSE_Project
 
             // Adding to list of opened tabs
             newTab.Controls.Add(richTextBox);
-            newTab.Tag = filePath;
 
             tabControl1.TabPages.Add(newTab);
             tabControl1.SelectedTab = newTab;
@@ -231,27 +226,17 @@ namespace FSE_Project
 
         private void TabControl1_MouseMove(object sender, MouseEventArgs e)
         {
-
             for (int i = 0; i < tabControl1.TabPages.Count; i++)
             {
                 Rectangle tabRect = tabControl1.GetTabRect(i);
-
                 if (tabRect.Contains(e.Location))
                 {
-                    // If a file path isn't set, fall back to using the tab's text ("Untitled" or file name)
                     string tooltipText = tabControl1.TabPages[i].Tag as string;
-                    Debug.WriteLine("Running for " + (i) + " " + tooltipText);
-
-                    //AddNewTab();
-                    //tooltipText = tabControl1.TabPages[i].Text;
-                    Debug.WriteLine(tooltipText);
-
-
-                    tabToolTip.SetToolTip(tabControl1, tooltipText);
+                    tabToolTip.SetToolTip(tabControl1.TabPages[i], tooltipText); // Set tooltip for the specific tab
                     return;
                 }
             }
-            tabToolTip.SetToolTip(tabControl1, "");
+            tabToolTip.SetToolTip(tabControl1, ""); // Reset tooltip when the mouse is not over any tab
         }
 
 
@@ -267,11 +252,6 @@ namespace FSE_Project
             {
                 string filePath = open.FileName;
                 OpenFileFromPath(filePath);
-            }
-            if (!isMouseMoveAttached)
-            {
-                tabControl1.MouseMove += TabControl1_MouseMove;
-                isMouseMoveAttached = true; // Mark as attached
             }
         }
 
