@@ -1,6 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using ScintillaNET;
+
 
 namespace FSE_Project
 {
@@ -12,6 +16,27 @@ namespace FSE_Project
             this.Text = "Py++";
             // Add event for double click to open files
             treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
+            //var scintilla = new Scintilla();
+            //scintilla.Dock = DockStyle.Fill;
+            //this.Controls.Add(scintilla);
+
+            //scintilla.Lexer = Lexer.Cpp;
+
+            //// Set C++ keywords
+            //scintilla.SetKeywords(0, "int float double char void return if else while for class struct");
+
+            //scintilla.StyleClearAll();
+
+            //// Basic styles
+            //scintilla.Styles[Style.Cpp.Default].ForeColor = Color.Silver;
+            //scintilla.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
+            //scintilla.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
+            //scintilla.Styles[Style.Cpp.Number].ForeColor = Color.Orange;
+            //scintilla.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
+            //scintilla.Styles[Style.Cpp.String].ForeColor = Color.Brown;
+            //scintilla.Styles[Style.Cpp.Character].ForeColor = Color.Brown;
+            //scintilla.Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
+            //scintilla.Margins[0].Width = 30;
 
         }
 
@@ -168,10 +193,12 @@ namespace FSE_Project
             RichTextBox richTextBox = new RichTextBox
             {
                 Dock = DockStyle.Fill,
-                AcceptsTab = true
+                AcceptsTab = true,
+                BackColor = Color.FromArgb(16, 16, 18),
+                ForeColor = Color.FromArgb(227, 227, 227)
             };
             richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-
+            richTextBox.Focus();
             newTab.Controls.Add(richTextBox);
             tabControl1.TabPages.Add(newTab);
             tabControl1.SelectedTab = newTab;
