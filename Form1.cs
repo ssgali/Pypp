@@ -307,7 +307,7 @@ namespace FSE_Project
                 FileName = "cmd.exe",
                 Arguments = $"/c \"{batchScript}\"",
                 UseShellExecute = true, // Required to open CMD in a new window
-                CreateNoWindow = false  // Ensures CMD is visible
+                CreateNoWindow = true  // Ensures CMD is visible
             };
 
             Process process = new Process { StartInfo = startInfo };
