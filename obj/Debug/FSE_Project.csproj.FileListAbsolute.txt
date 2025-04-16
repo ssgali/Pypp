@@ -1,0 +1,28 @@
+C:\Users\Muhammad Ali\Desktop\FSE_Project\bin\Debug\FSE_Project.exe.config
+C:\Users\Muhammad Ali\Desktop\FSE_Project\bin\Debug\FSE_Project.exe
+C:\Users\Muhammad Ali\Desktop\FSE_Project\bin\Debug\FSE_Project.pdb
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.csproj.AssemblyReference.cache
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.Properties.Resources.resources
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.csproj.GenerateResource.cache
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.csproj.CoreCompileInputs.cache
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.exe
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.pdb
+C:\Users\Muhammad Ali\Desktop\FSE_Project\bin\Debug\ScintillaNET.dll
+C:\Users\Muhammad Ali\Desktop\FSE_Project\bin\Debug\ScintillaNET.xml
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Proj.CD4C3804.Up2Date
+C:\Users\Muhammad Ali\Desktop\FSE_Project\obj\Debug\FSE_Project.Form1.resources
+C:\Users\Muhammad Ali\Desktop\FSE_Project\bin\Debug\JetBrainsMonoNL-Regular.ttf
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\bin\Debug\JetBrainsMonoNL-Regular.ttf
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\bin\Debug\FSE_Project.exe.config
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\bin\Debug\FSE_Project.exe
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\bin\Debug\FSE_Project.pdb
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\bin\Debug\ScintillaNET.dll
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\bin\Debug\ScintillaNET.xml
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.csproj.AssemblyReference.cache
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.Form1.resources
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.Properties.Resources.resources
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.csproj.GenerateResource.cache
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.csproj.CoreCompileInputs.cache
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Proj.CD4C3804.Up2Date
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.exe
+C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.pdb

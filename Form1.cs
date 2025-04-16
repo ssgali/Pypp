@@ -1,12 +1,11 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Drawing.Imaging;
-using System.Drawing.Text; // for fonts
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Text;
+using System.IO;
 using System.Windows.Forms;
 using ScintillaNET;
-
-
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FSE_Project
 {
@@ -15,57 +14,37 @@ namespace FSE_Project
 
         PrivateFontCollection pfc = new PrivateFontCollection();
         FontFamily jetBrainsMonoFamily;
+        private System.Windows.Forms.ToolTip tabToolTip = new System.Windows.Forms.ToolTip();
+
+        private string pythonKeywords = "def class import as if else elif return while for in break continue try except pass lambda from with raise global assert del nonlocal yield";
+        private string cppKeywords = "int float double if else return while for include namespace std class public private protected void cout cin new delete bool true false string const struct enum virtual override template typename";
+        private string cKeywords = "int float double if else return while for void char include stdio.h stdlib.h printf scanf sizeof typedef struct enum const static extern string";
 
         public Form1()
         {
             InitializeComponent();
-            this.Text = "Py++";
-            // Add event for double click to open files
-            treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
-
-            // Set the background color of the TabControl
-            tabControl1.DrawItem += TabControl1_DrawItem;
-
-            //var scintilla = new Scintilla();
-            //scintilla.Dock = DockStyle.Fill;
-            //this.Controls.Add(scintilla);
-
-            //scintilla.Lexer = Lexer.Cpp;
-
-            //// Set C++ keywords
-            //scintilla.SetKeywords(0, "int float double char void return if else while for class struct");
-
-            //scintilla.StyleClearAll();
-
-            //// Basic styles
-            //scintilla.Styles[Style.Cpp.Default].ForeColor = Color.Silver;
-            //scintilla.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
-            //scintilla.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
-            //scintilla.Styles[Style.Cpp.Number].ForeColor = Color.Orange;
-            //scintilla.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
-            //scintilla.Styles[Style.Cpp.String].ForeColor = Color.Brown;
-            //scintilla.Styles[Style.Cpp.Character].ForeColor = Color.Brown;
-            //scintilla.Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
-            //scintilla.Margins[0].Width = 30;
-
-
-            // Load the font from file
-            string fontPath = Path.Combine(Application.StartupPath, "Fonts\\JetBrainsMonoNL-Regular.ttf");
+            string fontPath = Path.Combine(Application.StartupPath, "JetBrainsMonoNL-Regular.ttf");
             pfc.AddFontFile(fontPath);
-            // Store the font family for later use
             jetBrainsMonoFamily = pfc.Families[0];
 
-            AddNewTab();
+            this.Text = "Py++";
+            treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
+            tabControl1.DrawItem += TabControl1_DrawItem;
+            tabControl1.ShowToolTips = true;
+            tabControl1.MouseMove += TabControl1_MouseMove;
+            this.KeyPreview = true;
 
+            AddNewTab();
         }
 
-        private ToolTip tabToolTip = new ToolTip();
+        // Use the full namespace for the Windows Forms ToolTip
         private void Form1_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
             tabControl1.ShowToolTips = true; // Enable tooltips for TabControl
             tabControl1.MouseMove += TabControl1_MouseMove;
         }
+
 
         private void LoadFolderIntoTree(string folderPath)
         {
@@ -83,6 +62,83 @@ namespace FSE_Project
             {
                 treeView1.Nodes[0].Expand();  // Expand only the root folder
             }
+        }
+        private Scintilla CreateScintillaEditor(string extension = ".py")
+        {
+            Scintilla scintilla = new Scintilla
+            {
+                Dock = DockStyle.Fill
+            };
+
+            Color darkBg = Color.FromArgb(16, 16, 18);
+            Color lightText = Color.FromArgb(227, 227, 227);
+
+            scintilla.Styles[Style.Default].Font = jetBrainsMonoFamily.Name;
+            scintilla.Styles[Style.Default].Size = 12;
+            scintilla.Styles[Style.Default].BackColor = darkBg;
+            scintilla.Styles[Style.Default].ForeColor = lightText;
+            scintilla.StyleClearAll();
+
+            scintilla.CaretForeColor = lightText;
+            scintilla.SetSelectionBackColor(true, Color.FromArgb(60, 60, 60));
+            scintilla.Margins[0].Width = 20;
+
+            SetLexerAndKeywords(scintilla, extension);
+
+            return scintilla;
+        }
+
+        private void SetLexerAndKeywords(Scintilla scintilla, string extension)
+        {
+            extension = extension.ToLower();
+            if (extension == ".cpp" || extension == ".hpp" || extension == ".cc" || extension == ".cxx")
+            {
+                scintilla.Lexer = Lexer.Cpp;
+                scintilla.SetKeywords(0, cppKeywords);
+                ApplyCppStyling(scintilla);
+            }
+            else if (extension == ".c" || extension == ".h")
+            {
+                scintilla.Lexer = Lexer.Cpp;
+                scintilla.SetKeywords(0, cKeywords);
+                ApplyCppStyling(scintilla);
+            }
+            else if (extension == ".py")
+            {
+                scintilla.Lexer = Lexer.Python;
+                scintilla.SetKeywords(0, pythonKeywords);
+                ApplyPythonStyling(scintilla);
+            }
+            else
+            {
+                scintilla.Lexer = Lexer.Null;
+            }
+        }
+
+        private void ApplyPythonStyling(Scintilla scintilla)
+        {
+            Color darkBg = Color.FromArgb(16, 16, 18);
+            scintilla.Styles[Style.Python.CommentLine].ForeColor = Color.Green;
+            scintilla.Styles[Style.Python.CommentLine].BackColor = darkBg;
+            scintilla.Styles[Style.Python.Number].ForeColor = Color.Orange;
+            scintilla.Styles[Style.Python.Number].BackColor = darkBg;
+            scintilla.Styles[Style.Python.String].ForeColor = Color.Brown;
+            scintilla.Styles[Style.Python.String].BackColor = darkBg;
+            scintilla.Styles[Style.Python.Word].ForeColor = Color.SkyBlue;
+            scintilla.Styles[Style.Python.Word].BackColor = darkBg;
+        }
+
+        private void ApplyCppStyling(Scintilla scintilla)
+        {
+            Color darkBg = Color.FromArgb(16, 16, 18);
+            scintilla.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
+            scintilla.Styles[Style.Cpp.Comment].BackColor = darkBg;
+            scintilla.Styles[Style.Cpp.Number].ForeColor = Color.Orange;
+            scintilla.Styles[Style.Cpp.Number].BackColor = darkBg;
+            scintilla.Styles[Style.Cpp.String].ForeColor = Color.Brown;
+            scintilla.Styles[Style.Cpp.String].BackColor = darkBg;
+            scintilla.Styles[Style.Cpp.Word].ForeColor = Color.Cyan;
+            scintilla.Styles[Style.Cpp.Word].BackColor = darkBg;
         }
 
         private void LoadSubDirectories(TreeNode parentNode, DirectoryInfo parentDir)
@@ -114,15 +170,6 @@ namespace FSE_Project
             }
         }
 
-        private RichTextBox GetCurrentRichTextBox()
-        {
-            if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Controls.Count > 0)
-            {
-                return tabControl1.SelectedTab.Controls[0] as RichTextBox;
-            }
-            return null;
-        }
-
         private void SwitchToNextTab()
         {
             if (tabControl1.TabCount > 1)
@@ -134,21 +181,19 @@ namespace FSE_Project
 
         private void IncreaseFontSize()
         {
-            var rtb = GetCurrentRichTextBox();
-            if (rtb != null)
+            if (tabControl1.SelectedTab?.Controls[0] is Scintilla scintilla)
             {
-                rtb.Font = new Font(jetBrainsMonoFamily, rtb.Font.Size + 1, rtb.Font.Style);
-                rtb.Focus();
+                var size = scintilla.Styles[Style.Default].Size;
+                if (size < 20) scintilla.Styles[Style.Default].Size += 1;
             }
         }
 
         private void DecreaseFontSize()
         {
-            var rtb = GetCurrentRichTextBox();
-            if (rtb != null && rtb.Font.Size > 10)
+            if (tabControl1.SelectedTab?.Controls[0] is Scintilla scintilla)
             {
-                rtb.Font = new Font(jetBrainsMonoFamily, rtb.Font.Size - 1);
-                rtb.Focus();
+                var size = scintilla.Styles[Style.Default].Size;
+                if (size > 10) scintilla.Styles[Style.Default].Size -= 1;
             }
         }
 
@@ -211,17 +256,9 @@ namespace FSE_Project
         private void AddNewTab()
         {
             TabPage newTab = new TabPage("Untitled");
-            RichTextBox richTextBox = new RichTextBox
-            {
-                Dock = DockStyle.Fill,
-                AcceptsTab = true,
-                BackColor = Color.FromArgb(16, 16, 18),
-                ForeColor = Color.FromArgb(227, 227, 227),
-                Font = new Font(jetBrainsMonoFamily, 12) // Set the font to JetBrains Mono
-            };
-            richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-            richTextBox.Focus();
-            newTab.Controls.Add(richTextBox);
+            Scintilla scintilla = CreateScintillaEditor();
+            scintilla.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
+            newTab.Controls.Add(scintilla);
             tabControl1.TabPages.Add(newTab);
             tabControl1.SelectedTab = newTab;
             newTab.Tag = null;
@@ -244,37 +281,25 @@ namespace FSE_Project
             {
                 if (tab.Tag is string existingPath && existingPath == filePath)
                 {
-                    tabControl1.SelectedTab = tab;  // Switch to the already opened tab
+                    tabControl1.SelectedTab = tab;
                     return;
                 }
             }
 
             string content = File.ReadAllText(filePath);
-
             TabPage newTab = new TabPage(Path.GetFileName(filePath))
             {
-                ToolTipText = filePath,  // Set the ToolTipText property to the file path
-                Tag = filePath  // Set the Tag property to the file path
+                ToolTipText = filePath,
+                Tag = filePath
             };
 
-            RichTextBox richTextBox = new RichTextBox
-            {
-                Dock = DockStyle.Fill,
-                Text = content,
-                AcceptsTab = true,
-                BackColor = Color.FromArgb(16, 16, 18),
-                ForeColor = Color.FromArgb(227, 227, 227),
-                Font = new Font(jetBrainsMonoFamily, 12) // Set the font to JetBrains Mono
+            Scintilla editor = CreateScintillaEditor();
+            editor.Text = content;
 
-            };
-
-            richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
-
-            // Adding to list of opened tabs
-            newTab.Controls.Add(richTextBox);
-
+            newTab.Controls.Add(editor);
             tabControl1.TabPages.Add(newTab);
             tabControl1.SelectedTab = newTab;
+            SetLexerAndKeywords(editor, Path.GetExtension(filePath));
         }
 
         private void TabControl1_MouseMove(object sender, MouseEventArgs e)
@@ -369,9 +394,7 @@ namespace FSE_Project
         private void MarkTabUnsaved(TabPage tab)
         {
             if (!tab.Text.EndsWith("*"))
-            {
                 tab.Text += "*";
-            }
         }
 
         private void SaveCurrentFile()
@@ -379,8 +402,8 @@ namespace FSE_Project
             if (tabControl1.SelectedTab == null) return;
 
             TabPage currentTab = tabControl1.SelectedTab;
-            RichTextBox richTextBox = GetCurrentRichTextBox();
-            if (richTextBox == null) return;
+            Scintilla editor = currentTab.Controls[0] as Scintilla;
+            if (editor == null) return;
 
             string filePath = currentTab.Tag as string;
 
@@ -390,8 +413,27 @@ namespace FSE_Project
             }
             else
             {
-                File.WriteAllText(filePath, richTextBox.Text);
-                currentTab.Text = Path.GetFileName(filePath);  // Remove "*"
+                File.WriteAllText(filePath, editor.Text);
+                currentTab.Text = Path.GetFileName(filePath);
+            }
+        }
+
+        private void SaveCurrentFileAs()
+        {
+            if (tabControl1.SelectedTab == null) return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog { Filter = "All Files|*.*" };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                TabPage currentTab = tabControl1.SelectedTab;
+                Scintilla editor = currentTab.Controls[0] as Scintilla;
+                string filePath = saveFileDialog.FileName;
+                File.WriteAllText(filePath, editor.Text);
+
+                currentTab.Tag = filePath;
+                currentTab.Text = Path.GetFileName(filePath);
+                LoadFolderIntoTree(Path.GetDirectoryName(filePath));
+                SetLexerAndKeywords(editor, Path.GetExtension(filePath));
             }
         }
 
@@ -399,36 +441,12 @@ namespace FSE_Project
         {
             SaveCurrentFile();
         }
-        
-        private void SaveCurrentFileAs()
-        {
-            if (tabControl1.SelectedTab == null) return;
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                Filter = "All Files|*.*"
-            };
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                TabPage currentTab = tabControl1.SelectedTab;
-                RichTextBox richTextBox = GetCurrentRichTextBox();
-
-                string filePath = saveFileDialog.FileName;
-                File.WriteAllText(filePath, richTextBox.Text);
-
-                currentTab.Tag = filePath;
-                currentTab.Text = Path.GetFileName(filePath);  // Remove "*"
-                LoadFolderIntoTree(Path.GetDirectoryName(filePath)); // to reload the file tree with the new file
-            }
-        }
 
         private void CloseCurrentTab()
         {
             if (tabControl1.SelectedTab != null)
             {
                 TabPage currentTab = tabControl1.SelectedTab;
-
                 if (currentTab.Text.EndsWith("*"))
                 {
                     DialogResult result = MessageBox.Show(
@@ -437,13 +455,9 @@ namespace FSE_Project
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Warning);
 
-                    if (result == DialogResult.Cancel)
-                        return;
-
-                    if (result == DialogResult.Yes)
-                        SaveCurrentFile();
+                    if (result == DialogResult.Cancel) return;
+                    if (result == DialogResult.Yes) SaveCurrentFile();
                 }
-
                 tabControl1.TabPages.Remove(currentTab);
             }
         }
