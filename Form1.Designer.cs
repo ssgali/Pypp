@@ -35,7 +35,6 @@ namespace FSE_Project
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
@@ -46,6 +45,7 @@ namespace FSE_Project
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -75,21 +75,6 @@ namespace FSE_Project
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1145, 723);
             this.panel3.TabIndex = 10;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.tabControl1.Font = new System.Drawing.Font("Cascadia Code", 11.75F);
-            this.tabControl1.HotTrack = true;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.Padding = new System.Drawing.Point(10, 3);
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1145, 723);
-            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl1.TabIndex = 10;
             // 
             // treeView1
             // 
@@ -186,6 +171,21 @@ namespace FSE_Project
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1370, 26);
             this.panel1.TabIndex = 1;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tabControl1.Font = new System.Drawing.Font("Cascadia Code", 11.75F);
+            this.tabControl1.HotTrack = true;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(10, 3);
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1145, 723);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl1.TabIndex = 10;
             // 
             // Form1
             // 

@@ -16,10 +16,9 @@ namespace FSE_Project
         FontFamily jetBrainsMonoFamily;
         private System.Windows.Forms.ToolTip tabToolTip = new System.Windows.Forms.ToolTip();
 
-        private string pythonKeywords = "def class import as if else elif return while for in break continue try except pass lambda from with raise global assert del nonlocal yield";
-        private string cppKeywords = "int float double if else return while for include namespace std class public private protected void cout cin new delete bool true false string const struct enum virtual override template typename";
-        private string cKeywords = "int float double if else return while for void char include stdio.h stdlib.h printf scanf sizeof typedef struct enum const static extern string";
-
+        private string pythonKeywords = "False await else import pass None break except in raise True class finally is return and continue for lambda try as def from nonlocal while assert del global not with yield";
+        private string cppKeywords = "alignas alignof and and_eq asm atomic_cancel atomic_commit atomic_noexcept auto bitand bitor bool break case catch char char8_t char16_t char32_t class compl concept const constexpr const_cast continue co_await co_return co_yield decltype default delete do double dynamic_cast else enum explicit export extern false final float for friend goto if inline int long mutable namespace new noexcept not not_eq nullptr operator or or_eq private protected public register reinterpret_cast requires return short signed sizeof static static_assert static_cast struct switch synchronized template this thread_local throw true try typedef typeid typename union unsigned using virtual void volatile wchar_t while noexcept";
+        private string cKeywords = "auto break case char const continue default do double else enum extern float for goto if inline int long register restrict return short signed sizeof static struct switch typedef union unsigned void volatile while _Alignas _Alignof _Atomic _Generic _Imaginary _Noreturn _Static_assert _Thread_local";
         public Form1()
         {
             InitializeComponent();
@@ -63,30 +62,47 @@ namespace FSE_Project
                 treeView1.Nodes[0].Expand();  // Expand only the root folder
             }
         }
-        private Scintilla CreateScintillaEditor(string extension = ".py")
+        private Scintilla CreateScintillaEditor(string extension = "")
         {
             Scintilla scintilla = new Scintilla
             {
                 Dock = DockStyle.Fill
             };
 
-            Color darkBg = Color.FromArgb(16, 16, 18);
-            Color lightText = Color.FromArgb(227, 227, 227);
+            Color darkBg = Color.FromArgb(16, 16, 18);  // Dark background color
+            Color lightText = Color.FromArgb(227, 227, 227);  // Light text color for general text
+            Color lineNumberColor = Color.FromArgb(200, 200, 200); // Color of the line numbers
+            Color lineNumberBgColor = Color.FromArgb(42, 40, 42); // Line number background color
 
+            // Default styling for the text area
             scintilla.Styles[Style.Default].Font = jetBrainsMonoFamily.Name;
             scintilla.Styles[Style.Default].Size = 12;
             scintilla.Styles[Style.Default].BackColor = darkBg;
             scintilla.Styles[Style.Default].ForeColor = lightText;
-            scintilla.StyleClearAll();
+            scintilla.StyleClearAll(); // Apply styles
 
+            // Set the width of the line number margin (on the left side of the editor)
+            scintilla.Margins[0].Width = 40; // Margin width
+            scintilla.Margins[0].BackColor = lineNumberBgColor; // Line number margin background color
+            scintilla.Margins[0].Sensitive = true; // Enable mouse clicks in the line number margin
+
+            // Set the color of the line number text
+            scintilla.Styles[Style.LineNumber].ForeColor = lineNumberColor;
+            scintilla.Styles[Style.LineNumber].BackColor = lineNumberBgColor; // Background color of line numbers
+
+            // Set caret color (the cursor)
             scintilla.CaretForeColor = lightText;
+
+            // Set selection background color
             scintilla.SetSelectionBackColor(true, Color.FromArgb(60, 60, 60));
-            scintilla.Margins[0].Width = 20;
+
+            scintilla.HScrollBar = false; // Disable horizontal scrollbar
 
             SetLexerAndKeywords(scintilla, extension);
 
             return scintilla;
         }
+
 
         private void SetLexerAndKeywords(Scintilla scintilla, string extension)
         {
@@ -183,8 +199,15 @@ namespace FSE_Project
         {
             if (tabControl1.SelectedTab?.Controls[0] is Scintilla scintilla)
             {
-                var size = scintilla.Styles[Style.Default].Size;
-                if (size < 20) scintilla.Styles[Style.Default].Size += 1;
+                var currentSize = scintilla.Styles[Style.Default].Size;
+
+                // Increase size if less than 20
+                if (currentSize < 20)
+                {
+                    scintilla.Styles[Style.Default].Size += 1;
+                    // Refresh the editor to apply the change
+                    scintilla.StyleClearAll();
+                }
             }
         }
 
@@ -192,10 +215,18 @@ namespace FSE_Project
         {
             if (tabControl1.SelectedTab?.Controls[0] is Scintilla scintilla)
             {
-                var size = scintilla.Styles[Style.Default].Size;
-                if (size > 10) scintilla.Styles[Style.Default].Size -= 1;
+                var currentSize = scintilla.Styles[Style.Default].Size;
+
+                // Decrease size if greater than 10
+                if (currentSize > 10)
+                {
+                    scintilla.Styles[Style.Default].Size -= 1;
+                    // Refresh the editor to apply the change
+                    scintilla.StyleClearAll();
+                }
             }
         }
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) // for Global key bindings
         {
