@@ -70,9 +70,9 @@ namespace FSE_Project
             // 
             panel3.Controls.Add(tabControl1);
             panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(274, 0);
+            panel3.Location = new Point(225, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1096, 723);
+            panel3.Size = new Size(1145, 723);
             panel3.TabIndex = 10;
             // 
             // tabControl1
@@ -86,17 +86,17 @@ namespace FSE_Project
             tabControl1.Name = "tabControl1";
             tabControl1.Padding = new Point(10, 3);
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1096, 723);
+            tabControl1.Size = new Size(1145, 723);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 10;
             // 
             // treeView1
             // 
-            treeView1.BackColor = Color.FromArgb(21, 21, 23);
+            treeView1.BackColor = Color.FromArgb(42, 40, 42);
             treeView1.Dock = DockStyle.Left;
             treeView1.Location = new Point(0, 0);
             treeView1.Name = "treeView1";
-            treeView1.Size = new Size(274, 723);
+            treeView1.Size = new Size(225, 723);
             treeView1.TabIndex = 0;
             // 
             // toolStrip1

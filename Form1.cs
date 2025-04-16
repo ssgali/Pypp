@@ -1,21 +1,31 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing.Imaging;
+using System.Drawing.Text; // for fonts
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using ScintillaNET;
+
 
 
 namespace FSE_Project
 {
     public partial class Form1 : Form
     {
+
+        PrivateFontCollection pfc = new PrivateFontCollection();
+        FontFamily jetBrainsMonoFamily;
+
         public Form1()
         {
             InitializeComponent();
             this.Text = "Py++";
             // Add event for double click to open files
             treeView1.NodeMouseDoubleClick += treeView1_NodeMouseDoubleClick_1;
+
+            // Set the background color of the TabControl
+            tabControl1.DrawItem += TabControl1_DrawItem;
+
             //var scintilla = new Scintilla();
             //scintilla.Dock = DockStyle.Fill;
             //this.Controls.Add(scintilla);
@@ -37,6 +47,15 @@ namespace FSE_Project
             //scintilla.Styles[Style.Cpp.Character].ForeColor = Color.Brown;
             //scintilla.Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
             //scintilla.Margins[0].Width = 30;
+
+
+            // Load the font from file
+            string fontPath = Path.Combine(Application.StartupPath, "Fonts\\JetBrainsMonoNL-Regular.ttf");
+            pfc.AddFontFile(fontPath);
+            // Store the font family for later use
+            jetBrainsMonoFamily = pfc.Families[0];
+
+            AddNewTab();
 
         }
 
@@ -118,16 +137,18 @@ namespace FSE_Project
             var rtb = GetCurrentRichTextBox();
             if (rtb != null)
             {
-                rtb.Font = new Font(rtb.Font.FontFamily, rtb.Font.Size + 1);
+                rtb.Font = new Font(jetBrainsMonoFamily, rtb.Font.Size + 1, rtb.Font.Style);
+                rtb.Focus();
             }
         }
 
         private void DecreaseFontSize()
         {
             var rtb = GetCurrentRichTextBox();
-            if (rtb != null && rtb.Font.Size > 6)
+            if (rtb != null && rtb.Font.Size > 10)
             {
-                rtb.Font = new Font(rtb.Font.FontFamily, rtb.Font.Size - 1);
+                rtb.Font = new Font(jetBrainsMonoFamily, rtb.Font.Size - 1);
+                rtb.Focus();
             }
         }
 
@@ -195,7 +216,8 @@ namespace FSE_Project
                 Dock = DockStyle.Fill,
                 AcceptsTab = true,
                 BackColor = Color.FromArgb(16, 16, 18),
-                ForeColor = Color.FromArgb(227, 227, 227)
+                ForeColor = Color.FromArgb(227, 227, 227),
+                Font = new Font(jetBrainsMonoFamily, 12) // Set the font to JetBrains Mono
             };
             richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
             richTextBox.Focus();
@@ -239,7 +261,11 @@ namespace FSE_Project
             {
                 Dock = DockStyle.Fill,
                 Text = content,
-                AcceptsTab = true
+                AcceptsTab = true,
+                BackColor = Color.FromArgb(16, 16, 18),
+                ForeColor = Color.FromArgb(227, 227, 227),
+                Font = new Font(jetBrainsMonoFamily, 12) // Set the font to JetBrains Mono
+
             };
 
             richTextBox.TextChanged += (s, ev) => MarkTabUnsaved(newTab);
@@ -448,6 +474,20 @@ namespace FSE_Project
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             RunFile();
+        }
+
+        private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabControl tabControl = sender as TabControl;
+            if (tabControl != null)
+            {
+                // Set the background color
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(42, 40, 42)), e.Bounds);
+
+                // Draw the tab text
+                string tabText = tabControl.TabPages[e.Index].Text;
+                TextRenderer.DrawText(e.Graphics, tabText, e.Font, e.Bounds, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            }
         }
 
     }

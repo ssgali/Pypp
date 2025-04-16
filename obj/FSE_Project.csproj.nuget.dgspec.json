@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Muhammad Ali\\Documents\\4th Sem\\Fund of SE\\Project\\Iteration_1\\Pypp\\FSE_Project.csproj": {}
+    "C:\\Users\\shadows box\\Documents\\SEM4\\FSE\\Further\\Pypp\\FSE_Project.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Muhammad Ali\\Documents\\4th Sem\\Fund of SE\\Project\\Iteration_1\\Pypp\\FSE_Project.csproj": {
+    "C:\\Users\\shadows box\\Documents\\SEM4\\FSE\\Further\\Pypp\\FSE_Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Muhammad Ali\\Documents\\4th Sem\\Fund of SE\\Project\\Iteration_1\\Pypp\\FSE_Project.csproj",
+        "projectUniqueName": "C:\\Users\\shadows box\\Documents\\SEM4\\FSE\\Further\\Pypp\\FSE_Project.csproj",
         "projectName": "FSE_Project",
-        "projectPath": "C:\\Users\\Muhammad Ali\\Documents\\4th Sem\\Fund of SE\\Project\\Iteration_1\\Pypp\\FSE_Project.csproj",
-        "packagesPath": "C:\\Users\\Muhammad Ali\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Muhammad Ali\\Documents\\4th Sem\\Fund of SE\\Project\\Iteration_1\\Pypp\\obj\\",
+        "projectPath": "C:\\Users\\shadows box\\Documents\\SEM4\\FSE\\Further\\Pypp\\FSE_Project.csproj",
+        "packagesPath": "C:\\Users\\shadows box\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shadows box\\Documents\\SEM4\\FSE\\Further\\Pypp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Muhammad Ali\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\shadows box\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,8 +43,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -74,7 +73,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.311/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
