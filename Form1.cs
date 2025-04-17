@@ -62,24 +62,11 @@ namespace FSE_Project
                 treeView1.Nodes[0].Expand();  // Expand only the root folder
             }
         }
-        private Scintilla CreateScintillaEditor(string extension = "")
-        {
-            Scintilla scintilla = new Scintilla
-            {
-                Dock = DockStyle.Fill
-            };
 
-            Color darkBg = Color.FromArgb(16, 16, 18);  // Dark background color
+        private void setScintillaMargin(Scintilla scintilla) {
             Color lightText = Color.FromArgb(227, 227, 227);  // Light text color for general text
             Color lineNumberColor = Color.FromArgb(200, 200, 200); // Color of the line numbers
             Color lineNumberBgColor = Color.FromArgb(42, 40, 42); // Line number background color
-
-            // Default styling for the text area
-            scintilla.Styles[Style.Default].Font = jetBrainsMonoFamily.Name;
-            scintilla.Styles[Style.Default].Size = 12;
-            scintilla.Styles[Style.Default].BackColor = darkBg;
-            scintilla.Styles[Style.Default].ForeColor = lightText;
-            scintilla.StyleClearAll(); // Apply styles
 
             // Set the width of the line number margin (on the left side of the editor)
             scintilla.Margins[0].Width = 40; // Margin width
@@ -92,6 +79,28 @@ namespace FSE_Project
 
             // Set caret color (the cursor)
             scintilla.CaretForeColor = lightText;
+        }
+
+        private Scintilla CreateScintillaEditor(string extension = "")
+        {
+            Scintilla scintilla = new Scintilla
+            {
+                Dock = DockStyle.Fill
+            };
+
+            Color darkBg = Color.FromArgb(30, 30, 30);  // Dark background color
+            Color lightText = Color.FromArgb(227, 227, 227);  // Light text color for general text
+            Color lineNumberColor = Color.FromArgb(200, 200, 200); // Color of the line numbers
+            Color lineNumberBgColor = Color.FromArgb(42, 40, 42); // Line number background color
+
+            // Default styling for the text area
+            scintilla.Styles[Style.Default].Font = jetBrainsMonoFamily.Name;
+            scintilla.Styles[Style.Default].Size = 12;
+            scintilla.Styles[Style.Default].BackColor = darkBg;
+            scintilla.Styles[Style.Default].ForeColor = lightText;
+            scintilla.StyleClearAll(); // Apply styles
+
+            setScintillaMargin(scintilla);
 
             // Set selection background color
             scintilla.SetSelectionBackColor(true, Color.FromArgb(60, 60, 60));
@@ -133,7 +142,8 @@ namespace FSE_Project
 
         private void ApplyPythonStyling(Scintilla scintilla)
         {
-            Color darkBg = Color.FromArgb(16, 16, 18);
+            Color darkBg = Color.FromArgb(30, 30, 30);
+
             scintilla.Styles[Style.Python.CommentLine].ForeColor = Color.Green;
             scintilla.Styles[Style.Python.CommentLine].BackColor = darkBg;
             scintilla.Styles[Style.Python.Number].ForeColor = Color.Orange;
@@ -146,7 +156,7 @@ namespace FSE_Project
 
         private void ApplyCppStyling(Scintilla scintilla)
         {
-            Color darkBg = Color.FromArgb(16, 16, 18);
+            Color darkBg = Color.FromArgb(30, 30, 30);
             scintilla.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
             scintilla.Styles[Style.Cpp.Comment].BackColor = darkBg;
             scintilla.Styles[Style.Cpp.Number].ForeColor = Color.Orange;
@@ -202,12 +212,26 @@ namespace FSE_Project
                 var currentSize = scintilla.Styles[Style.Default].Size;
 
                 // Increase size if less than 20
-                if (currentSize < 20)
+                // Retrieve the file path from the selected tab's Tag property
+                string filePath = tabControl1.SelectedTab.Tag as string;
+
+                if (!string.IsNullOrEmpty(filePath))
                 {
-                    scintilla.Styles[Style.Default].Size += 1;
-                    // Refresh the editor to apply the change
-                    scintilla.StyleClearAll();
+                    // Get the file extension
+                    string extension = Path.GetExtension(filePath);
+
+
+                    if (currentSize < 20)
+                    {
+                        scintilla.Styles[Style.Default].Size += 1;
+                        // Refresh the editor to apply the change
+                        scintilla.StyleClearAll();
+                        // Use the extension if needed (e.g., for styling)
+                        SetLexerAndKeywords(scintilla, extension);
+                        setScintillaMargin(scintilla);
+                    }
                 }
+
             }
         }
 
@@ -217,13 +241,27 @@ namespace FSE_Project
             {
                 var currentSize = scintilla.Styles[Style.Default].Size;
 
-                // Decrease size if greater than 10
-                if (currentSize > 10)
+                // Increase size if less than 20
+                // Retrieve the file path from the selected tab's Tag property
+                string filePath = tabControl1.SelectedTab.Tag as string;
+
+                if (!string.IsNullOrEmpty(filePath))
                 {
-                    scintilla.Styles[Style.Default].Size -= 1;
-                    // Refresh the editor to apply the change
-                    scintilla.StyleClearAll();
+                    // Get the file extension
+                    string extension = Path.GetExtension(filePath);
+
+                    if (currentSize > 10)
+                    {
+                        scintilla.Styles[Style.Default].Size -= 1;
+                        // Refresh the editor to apply the change
+                        scintilla.StyleClearAll();
+                        // Use the extension if needed (e.g., for styling)
+                        SetLexerAndKeywords(scintilla, extension);
+                        setScintillaMargin(scintilla);
+
+                    }
                 }
+
             }
         }
 
@@ -536,4 +574,28 @@ namespace FSE_Project
         }
 
     }
+
+    public class FlatToolStripRenderer : ToolStripProfessionalRenderer
+    {
+        public FlatToolStripRenderer() : base(new ProfessionalColorTable()) { }
+
+        protected override void OnRenderButtonBackground(ToolStripItemRenderEventArgs e)
+        {
+            // Custom background on hover/press
+            if (e.Item.Selected || e.Item.Pressed)
+            {
+                Rectangle bounds = new Rectangle(Point.Empty, e.Item.Size);
+                using (Brush b = new SolidBrush(Color.FromArgb(50, 50, 50))) // dark hover color
+                {
+                    e.Graphics.FillRectangle(b, bounds);
+                }
+            }
+            else
+            {
+                base.OnRenderButtonBackground(e); // fallback
+            }
+        }
+    }
 }
+
+

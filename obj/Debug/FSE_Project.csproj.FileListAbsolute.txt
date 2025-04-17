@@ -26,3 +26,17 @@ C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Proj.CD4C3804.Up2Date
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.exe
 C:\Users\Muhammad Ali\Documents\4th Sem\Fund of SE\Project\Iteration_1\Pypp\obj\Debug\FSE_Project.pdb
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\bin\Debug\JetBrainsMonoNL-Regular.ttf
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\bin\Debug\FSE_Project.exe.config
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\bin\Debug\FSE_Project.exe
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\bin\Debug\FSE_Project.pdb
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\bin\Debug\ScintillaNET.dll
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\bin\Debug\ScintillaNET.xml
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.csproj.AssemblyReference.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.Form1.resources
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.Properties.Resources.resources
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.csproj.GenerateResource.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.csproj.CoreCompileInputs.cache
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Proj.CD4C3804.Up2Date
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.exe
+C:\Users\shadows box\Documents\SEM4\FSE\Further\Pypp\obj\Debug\FSE_Project.pdb
